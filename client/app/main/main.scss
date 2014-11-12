@@ -1,0 +1,117 @@
+.wrapper {
+    
+    float: left;
+    width: 100%;
+
+}
+
+header{
+    width:100%;
+    height:30px;
+    background-color:white;
+}
+
+.masthead{
+ background-color: black;
+  width: 100%;
+  padding-top: 45px;
+    .aura{
+        @include container(80em);
+        position:relative;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        border: 4px solid white; 
+        border:4px solid white;
+        transition:0.3s all;
+        h1{
+            position:absolute;
+            left:50%;
+            top:50%;
+            color:white;
+            text-transform: uppercase;
+            transform: translate(-50%,-75%);
+        }
+        p{
+            position:absolute;
+            left:50%;
+            top:65%;
+            color:white;
+            text-align: center;
+            text-transform: uppercase;
+            transform: translate(-50%,-50%);
+        }
+    }
+}
+
+.exhibitionInformation {
+    position: relative;
+    
+    width: 100%;
+    padding:25px 50px;
+    background-color: #e1e3e2;
+    p{
+        max-width:25%;
+    }
+}
+
+
+
+@include breakpoint(0) {
+    .masthead{
+        min-height: 410px;
+        padding-top: 25px;
+        .aura{
+            height:300px;
+            width:300px;
+            h1{
+                font-size:80px;
+            }
+
+        }
+    }
+}
+
+@include breakpoint(960px) {
+    .masthead{
+        min-height: 500px;
+        padding: 45px;
+        .aura{
+            height:400px;
+            width:400px;
+            h1{
+                 font-size: 110px;
+            }
+
+        }
+    }
+}
+
+@include breakpoint(1280px) {
+    .masthead{
+        min-height: 700px;
+        padding: 75px;
+        .aura{
+            height:500px;
+            width:500px;
+            h1{
+                font-size: 140px;
+            }
+
+        }
+    }
+}
+
+@include breakpoint(1600px) {
+    .masthead{
+        min-height: 900px;
+        padding-top: 105px;
+        .aura{
+            height:700px;
+            width:700px;
+        h1{
+            font-size:200px;
+        }
+        }
+    }
+}

@@ -1,0 +1,96 @@
+<div ng-include="'components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <h1>Admin</h1>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="user in users">
+            <strong>{{user.name}}</strong>
+            <br>
+            <span class="text-muted">{{user.email}}</span>
+            <a ng-click="delete(user)" class="trash">
+                <span class="glyphicon glyphicon-trash pull-right"></span>
+            </a>
+        </li>
+    </ul>
+    <h1>Upload Student List</h1>
+    <form>
+        <input type="file" name="file" onchange="angular.element(this).scope().uploadFile(this.files)" />
+
+    </form>
+    <h1>Student List</h1>
+    <ul class="list-group">
+        <li class="list-group-item" ng-repeat="user in allStudents">
+            <strong>{{user.name}}</strong>
+            <br>
+            <span class="text-muted">{{user.email}}</span>
+            <span class="text-muted">{{user.unikey}}</span>
+            <span class="text-muted">{{user.studentNo}}</span>
+            <a ng-click="delete(user)" class="trash">
+                <span class="glyphicon glyphicon-trash pull-right"></span>
+            </a>
+        </li>
+    </ul>
+    <h1>Studio List</h1>
+    <li class="list-group-item" ng-repeat="studio in allStudios">
+        <strong>{{studio.name}}</strong>
+        <br>
+        <a ng-click="deleteStudio(studio)" class="trash">
+            <span class="glyphicon glyphicon-trash pull-right"></span>
+        </a>
+    </li>
+
+    <div class="newStudio">
+        <h1>Create new Studio</h1>
+        <form role="form">
+            <div class="form-group">
+                <label for="studioName">Studio Name</label>
+                <input ng-model="newStudio.name" class="form-control" id="studioName" name="studioName" placeholder="Enter studio name">
+            </div>
+            <div class="form-group">
+                <label for="studioInfo">Studio Information</label>
+                <textarea ng-model="newStudio.description" class="form-control" id="studioInfo" name="studioInfo" placeholder="Enter details about studio"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleInputFile">Studio Images</label>
+                
+                
+                <button  ng-file-select="onFileSelect($files)" data-multiple="true" class="btn btn-default">Upload</button>
+
+                <table class="list" >
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Size</th>
+                            <th>Progress</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="file" ng-repeat="file in files">
+                            <td>{{file.name}}</td>
+                            <td>{{file.size}}</td>
+                            <td>{{file.progress}}</td>
+                            <td>
+                                <button ng-click="uploadFile(file)">
+                                    <img iconic data-src="assets/icons/circle-check.svg" class="iconic ">
+                                    <p>Upload</p>
+                                </button>
+                                <button>
+                                    <img iconic data-src="assets/icons/circle-x.svg" class="iconic ">
+                                    <p>Cancel</p>
+                                </button>
+                                <button ng-click="removeFile($index)">
+                                    <img iconic data-src="assets/icons/trash.svg" class="iconic ">
+                                    <p>Remove</p>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button ng-click="createStudio()" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+
+
+</div>

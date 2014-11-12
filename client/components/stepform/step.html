@@ -1,0 +1,9 @@
+<div class="step" ng-model="form">
+<h1>{{question}}</h1>
+
+<input ng-if="steptype==='input'" ng-bind-model="model" type="{{type}}">
+<button ng-if="steptype==='button'" ng-bind-action="action">Check</button>
+<button ng-show="index!=0" ng-click="lastQuestion()">Back</button>
+<button ng-hide="tq===index" ng-click="nextQuestion()">Next</button>
+
+</div>

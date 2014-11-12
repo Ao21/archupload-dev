@@ -1,0 +1,223 @@
+<div class="background upload">
+<div class="container upload">
+<h4><a href="/upload"><span ng-hide="noStudent">Hi, {{currentStudent.name}}! Welcome to </span>The Deposit Box</a></h4>
+
+<!-- Login Section -->
+
+<form ng-hide="hideform" novalidate name="studentLoginForm" action="" class="box" ng-submit="submitForm(studentLoginForm.$valid)">
+	<div class="group" ng-class="{'animation-step-out':!noStudent}" >
+	<input type="text"  placeholder="Unikey" ng-model="studentLoginForm.unikey" name="uUnikey" ng-required="true" ng-minlength="8" ng-maxlength="8" >
+	<input type="text"  placeholder="Student No." ng-model="studentLoginForm.studentNo" name="uStudentNo" type="password" ng-required="true">
+	<p ng-show="studentLoginForm.uUnikey.$error.minlength" class="help-block">Your Unikey is too short.</p>
+	<p ng-show="studentLoginForm.uUnikey.$error.maxlength" class="help-block">Your Unikey is too long.</p>
+	</div>
+	<button ng-class="{'animation-bounce-out':!noStudent}" type="submit" ng-disabled="studentLoginForm.$invalid"><span>Login</span></button>
+</form>
+
+<!-- Test Section -->
+
+
+
+<!-- Main Section -->
+
+<section class="popups" ng-hide="hideMain">
+	<div class="button" random-class  ng-class="{'pop-open':!hideMain}" ng-click="openAddProject()">
+		<img iconic data-src="assets/icons/plus.svg" class="iconic " alt="plus">
+	 <span>Add a project</span>
+	</div>
+
+	<div class="button" random-class  ng-class="{'pop-open':!hideMain}">
+		<img iconic data-src="assets/icons/settings.svg" class="iconic " alt="settings">
+		<span>Edit your profile</span>
+	</div>
+
+	<div class="button" ng-click="getProject(project)" random-class ng-class="{'pop-open':!hideMain}" ng-repeat="project in projects"><div style="background-image:url({{project.files[0].location}})" class="bkImg"></div><span>{{project.name}}</span></div>
+</section>
+
+<!-- Create Project Section -->
+
+
+<section class="addProject" ng-hide="hideAddProject">
+	<form action="" name="addProjectForm">
+	<div class="close" ng-click="closeWindow()"><img iconic data-src="assets/icons/circle-x.svg" class="iconic iconic-sm" alt="settings"></div>
+	
+	<div class="question" ng-show="currentQuestion===0">
+		<label for="">What is your project called?</label>
+		<input type="text" autofocus ng-model="project.name" name="projectName" ng-minlength="2">
+		
+		<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+			<p>Next</p>
+		</div>
+
+	</div>
+	<div class="question" ng-show="currentQuestion===1">
+		<label for="">Which Studio?</label>
+		<input type="text" ng-model="project.studio" typeahead="state for state in states | filter:$viewValue | limitTo:8" typeahead-editable="false" class="" name="projectStudio">
+			<p ng-show="addProjectForm.projectStudio.$invalid" class="help-block">You must select a studio from the list.</p>
+
+		<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+			<p>Next</p>
+		</div>
+		<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+	</div>
+	<div class="question" ng-show="currentQuestion===2">
+		<label for="">Project Summary</label>
+	 	<textarea ng-model="project.summary" redactor="{minHeight: 100}"></textarea>
+	 	<p class="help-block">Max 100 words.</p>
+	 	<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+	 		<p>Next</p>
+	 	</div> 
+	 	<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+
+	</div>
+	<div class="question" ng-show="currentQuestion===3">
+		<label for="">Project Detail</label>
+	 	<textarea ng-model="project.detail" redactor="{minHeight: 100}"></textarea>
+	 		 	<p class="help-block">Max 250 words.</p>
+ 
+	 	<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+	 		<p>Next</p>
+	 	</div>
+		<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+	</div>
+	<div class="question" ng-show="currentQuestion===4">
+		<label for="">Upload Images</label>
+
+ 		 <div class="button upld" ng-file-select="onFileSelect($files)" data-multiple="true">
+ 			<img iconic data-src="assets/icons/plus.svg" class="iconic ">
+ 		</div> 
+ 		<table class="list" ng-show="files.length">
+ 		<thead>
+ 		<tr>
+ 			<th>Name</th>
+ 			<th>Size</th>
+ 			<th>Progress</th>
+ 			<th>Actions</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr class="file" ng-repeat="file in files">
+ 				<td>{{file.name}}</td>
+ 				<td>{{file.size}}</td>
+ 				<td>{{file.progress}}</td>
+ 				<td>
+ 					<button ng-click="uploadFile(file)"><img iconic data-src="assets/icons/circle-check.svg" class="iconic "><p>Upload</p></button>
+ 					<button ><img iconic data-src="assets/icons/circle-x.svg" class="iconic "><p>Cancel</p></button>
+ 					<button ng-click="removeFile($index)"><img iconic data-src="assets/icons/trash.svg" class="iconic "><p>Remove</p></button>
+ 				</td>
+ 			</tr>
+ 		</tbody>
+ 		</table>
+ 		<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+ 			<p>Next</p>
+ 		</div>
+ 		<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+ 	</div>
+ 	<div class="question" ng-show="currentQuestion===5">
+ 	 <p>Confirm your project's details.</p>
+
+ 	<table style="width:100%;margin:46px 0;">
+ 		<tbody>
+ 			<tr><td>Project Name:</td><td>{{project.name}}</td></tr>
+ 			<tr><td>Project Studio:</td><td>{{project.studio}}</td></tr>
+ 			<tr><td>Project Summary:</td><td>{{project.summary}}</td></tr>
+ 			<tr><td>Project Detail:</td><td>{{project.detail}}</td></tr>
+ 		</tbody>
+ 	</table>
+ 	<div>
+ 		<h6>Images</h6>
+ 		<img style="max-width:45px;" ng-repeat="file in files" src="{{file.uploadData.location}}" alt="">
+ 	</div>
+
+ 	<div class="flip-container"  class="create" ng-click="confirmProject()" ng-class="{valid:validate()}">
+ 		<div class="flipper">
+ 			<div class="front">
+ 				<p>Confirm Project</p>
+ 			</div>
+ 			<div ng-click="createProject()" class="back">
+ 				<p>Submit</p>
+ 			</div>
+ 		</div>
+ 	</div>
+ 	<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+
+ 		
+ 	</div>
+ 	 
+	
+	
+
+	</form>
+</section>
+
+<!-- Edit Project Section -->
+
+
+<section class="editProject" ng-hide="hideEditProject">
+	<div class="close" ng-click="closeWindow()"><img iconic data-src="assets/icons/circle-x.svg" class="iconic iconic-sm" alt="settings"></div>
+	<label for="">Project Name</label>
+	<p editable-text="selectedProject.name" onaftersave="updateProject()">{{selectedProject.name}}</p>
+	<label for="">Project Studio</label>
+	<p editable-text="selectedProject.studio" e-typeahead="state for state in states | filter:$viewValue | limitTo:8" onaftersave="updateProject()">{{selectedProject.studio}}</p>
+	<p ng-bind-html=""></p>
+	<label for="">Project Summary</label>
+	<redactor-click ng-model="selectedProject.summary"></redactor-click>
+	<label for="">Project Details</label>
+	<redactor-click ng-model="selectedProject.detail"></redactor-click>
+	<label for="">Images</label>
+	<div class="image" ng-repeat="file in selectedProject.files">
+		<div ng-click="deleteFile(file, $index)" class="delete">X</div>
+		<img src="{{file.location}}" alt="">
+	</div>
+	<label for="">Add More Images</label>
+
+ 		 <div class="button upld" ng-file-select="onFileSelect($files)" data-multiple="true">
+ 			<img iconic data-src="assets/icons/plus.svg" class="iconic ">
+ 		</div> 
+ 		<table class="list" ng-show="files.length">
+ 		<thead>
+ 		<tr>
+ 			<th>Name</th>
+ 			<th>Size</th>
+ 			<th>Progress</th>
+ 			<th>Actions</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr class="file" ng-repeat="file in files">
+ 				<td>{{file.name}}</td>
+ 				<td>{{file.size}}</td>
+ 				<td>{{file.progress}}</td>
+ 				<td>
+ 					<button ng-click="editProjectAddFile(file, $index)"><img iconic data-src="assets/icons/circle-check.svg" class="iconic "><p>Upload</p></button>
+ 					<button ><img iconic data-src="assets/icons/circle-x.svg" class="iconic "><p>Cancel</p></button>
+ 					<button ng-click="removeFile($index)"><img iconic data-src="assets/icons/trash.svg" class="iconic "><p>Remove</p></button>
+ 				</td>
+ 			</tr>
+ 		</tbody>
+ 		</table>
+
+</section>
+
+	
+
+
+<!-- <form action="" >
+ 	  <input type="text" ng-model="myModelObj">
+ 	  <input type="file" ng-file-select="onFileSelect($files)" multiple>
+ 	 
+ 	
+ 	  <button ng-click="upload.abort()">Cancel Upload</button>
+ </form> --> 
+</div>
+</div>

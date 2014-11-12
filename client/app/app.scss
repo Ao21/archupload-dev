@@ -1,0 +1,65 @@
+$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+$fa-font-path: "/bower_components/font-awesome/fonts";
+
+@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+@import 'font-awesome/scss/font-awesome';
+@import 'susy';
+@import '../bower_components/breakpoint-sass/stylesheets/breakpoint';
+
+
+/**
+ * App-wide Styles
+ */
+
+
+html,body,[ui-view]{
+	height:100%;
+    min-height:100%;
+	font-family:'proxima-nova'
+}
+
+h1,h2,h3,h4,h5,h6{
+    font-family:'proxima-nova';
+}
+
+
+*{
+	box-sizing:border-box;
+}
+
+.adelle{
+	font-family:'adelle'
+}
+
+@mixin adelle() {
+  font-family:'adelle';
+}
+
+
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+
+footer{
+    height:29px;
+}
+
+
+// Component styles are injected through grunt
+// injector
+@import 'account/login/login.scss';
+@import 'admin/admin.scss';
+@import 'catalogue/catalogue.scss';
+@import 'main/main.scss';
+@import 'project/project.scss';
+@import 'upload/upload.scss';
+@import 'autcomplete/autocomplete.scss';
+@import 'iconic/colours.scss';
+@import 'modal/modal.scss';
+@import 'navbar/navbar.scss';
+@import 'redactor/redactor.scss';
+@import 'stepform/stepform.scss';
+// endinjector
