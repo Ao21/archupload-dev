@@ -12,6 +12,7 @@ angular.module('archuploadApp')
     $scope.imageUploads = [];
     $scope.form = {};
     $scope.files = [];
+    $scope.panelFiles = [];
     $scope.currentQuestion=0;
 
 
@@ -41,6 +42,21 @@ angular.module('archuploadApp')
 
     }
 
+    $scope.deleteProject = function(id){
+        ProjectServices.deleteProject(id).then(function(){
+            ProjectServices.getProjectsByUnikey($scope.currentStudent._id).then(function(data){
+                        //console.log(data);
+                        $scope.projects = data.plain();
+                        $scope.hideAddProject = true;
+                         $scope.hideEditProject = true;
+                         $scope.hideMain = false;
+                         $scope.currentQuestion=0;
+                         $scope.selectedProject = "";
+                         $scope.files = [];
+
+                    });
+        })
+    }
 
 
     $scope.submitForm = function(isValid){
@@ -54,7 +70,7 @@ angular.module('archuploadApp')
                 $http.post('/api/unikeys/check', checkUniObject).success(function(response){
                     $scope.currentStudent = response;
                     console.log($scope.currentStudent);
-                    ProjectServices.getProjectsByUnikey($scope.currentStudent.unikey).then(function(data){
+                    ProjectServices.getProjectsByUnikey($scope.currentStudent._id).then(function(data){
                         //console.log(data);
                         $scope.projects = data;
                     });
@@ -103,6 +119,12 @@ angular.module('archuploadApp')
         else if($scope.currentQuestion===4){
            return true;
         }
+        else if($scope.currentQuestion===5){
+           return true;
+        }
+         else if($scope.currentQuestion===6){
+           return true;
+        }
         else{
             return false;
         }
@@ -117,11 +139,16 @@ angular.module('archuploadApp')
         for (var i = $scope.files.length - 1; i >= 0; i--) {
             fileArray.push($scope.files[i].uploadData)
         };
+        var panelArray = [];
+        for (var i = $scope.panelFiles.length - 1; i >= 0; i--) {
+            panelArray.push($scope.panelFiles[i].uploadData)
+        };
         projectUpload.unikey = $scope.currentStudent.unikey
         projectUpload.files = fileArray;
-        projectUpload.author = $scope.currentStudent._id;
+        projectUpload.panels = panelArray;
+        projectUpload.author.push($scope.currentStudent._id);
         ProjectServices.create(projectUpload).then(function(data){
-             ProjectServices.getProjectsByUnikey($scope.currentStudent.unikey).then(function(data){
+             ProjectServices.getProjectsByUnikey($scope.currentStudent._id).then(function(data){
                         //console.log(data);
                         $scope.projects = data.plain();
                         $scope.hideMain = false;
@@ -155,7 +182,7 @@ angular.module('archuploadApp')
     }
 
     $scope.closeWindow = function(){
-         ProjectServices.getProjectsByUnikey($scope.currentStudent.unikey).then(function(data){
+         ProjectServices.getProjectsByUnikey($scope.currentStudent._id).then(function(data){
                         //console.log(data);
                         $scope.projects = data.plain();
                         $scope.hideAddProject = true;
@@ -186,6 +213,59 @@ angular.module('archuploadApp')
                         method: 'POST',
                         data: {
                             'key': 'architecture/2014Exhibition/' + $scope.currentStudent.unikey + '/' + Math.round(Math.random() * 10000) + '$$' + $file.name,
+                            'acl': 'public-read',
+                            'Content-Type': $file.type,
+                            'AWSAccessKeyId': 'AKIAIRT6MA7UDDLPWPVA',
+                            'success_action_status': '201',
+                            'Policy': s3Params.s3Policy,
+                            'Signature': s3Params.s3Signature
+                        },
+                        file: $file,
+                    }).then(function(response) {
+                        $file.progress = parseInt(100);
+
+                        if (response.status === 201) {
+                            var data = xml2json.parser(response.data),
+                                parsedData;
+                            parsedData = {
+                                location: data.postresponse.location,
+                                bucket: data.postresponse.bucket,
+                                key: data.postresponse.key,
+                                etag: data.postresponse.etag,
+                                type: 0
+
+                            };
+                            file.uploadData = parsedData;
+                            //$scope.imageUploads.push(parsedData);
+
+                            $scope.formFileInvalid = false;
+
+
+                        } else {
+                            alert('Upload Failed');
+
+
+                        }
+                    }, null, function(evt) {
+                        $file.progress = parseInt(100.0 * evt.loaded / evt.total);
+                        //$('#' + file.id).children('#progress').html(parseInt(100.0 * evt.loaded / evt.total));
+
+                    });
+                });
+    }
+
+    $scope.uploadPanels = function($file){
+        var file = $file;
+
+         $http.get('/api/aws/s3Policy?mimeType=' + $file.type).success(function(response) {
+
+                    var s3Params = response;
+                    console.log(s3Params);
+                    $upload.upload({
+                        url: 'https://' + 'archusyd' + '.s3-ap-southeast-2.amazonaws.com/',
+                        method: 'POST',
+                        data: {
+                            'key': 'architecture/2014Exhibition/' + $scope.currentStudent.unikey + '/panel/' + Math.round(Math.random() * 10000) + '$$' + $file.name,
                             'acl': 'public-read',
                             'Content-Type': $file.type,
                             'AWSAccessKeyId': 'AKIAIRT6MA7UDDLPWPVA',
@@ -322,7 +402,23 @@ angular.module('archuploadApp')
             idCount++;
             file.progress = parseInt(0);
 
-          
+        }
+    };
+
+
+    $scope.onFileSelectPanel = function($files) {
+        //$files: an array of files selected, each file has name, size, and type.
+        $scope.upload = [];
+        var idCount = 0;
+
+        for (var i = 0; i < $files.length; i++) {
+            $scope.panelFiles.push($files[i]);
+
+            $scope.formFileInvalid = true;
+            var file = $files[i];
+            file.id = 'fileId' + idCount;
+            idCount++;
+            file.progress = parseInt(0);
 
         }
     };

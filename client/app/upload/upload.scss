@@ -220,6 +220,50 @@ section.addProject {
             border: 1px solid white;
         }
     }
+    .chosen-container-multi .chosen-choices li.search-choice {
+  position: relative;
+  margin: 10px 0 3px 5px;
+  padding: 3px 20px 3px 5px;
+  border:none;
+  background-image:none;
+  background-color:black;
+  color:white;
+  box-shadow:none;
+
+  line-height: 13px;
+  cursor: default; }
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"]{
+    height: 35px;
+}
+    .chosen-container {
+        width: 100%!important;
+        .chosen-choices {
+            background: none;
+            border: none;
+            border-bottom: 1px solid;
+            font-size: 16px;
+            margin: 25px 10%;
+            width: 80%;
+            border: none;
+            border-bottom: 1px solid #333;
+            text-align: center;
+            outline: none;
+            padding: 0px 0;
+            .search-field{
+                input{
+                    height:35px;
+                }
+            }
+
+        }
+        .chosen-drop{
+            width:80%;
+            margin:0 10%;
+            top:75%;
+        }
+    }
+
     .question {
         .help-block {
             text-align: center;
@@ -338,9 +382,9 @@ section.editProject {
     }
     .image {
         width: 24%;
-    float: left;
-    position: relative; 
-    margin-left: 1%;
+        float: left;
+        position: relative;
+        margin-left: 1%;
         .delete {
             position: absolute;
             top: 5px;
@@ -357,62 +401,81 @@ section.editProject {
         }
     }
     .button.upld {
-            width: 70px;
-            height: 70px;
-            padding: 10px;
-            margin: 0px 0;
-            border-radius: 50%;
-            background-color: #333;
+        width: 70px;
+        height: 70px;
+        padding: 10px;
+        margin: 0px 0;
+        border-radius: 50%;
+        background-color: #333;
+        .iconic {
+            width: 50px;
+            height: 50px;
+        }
+    }
+     button {
+            background: none;
+            box-shadow: none;
+            border: none;
+            font-size: 18px;
+            border-radius: 25px;
+            padding: 7px 25px;
+            margin-top: 35px;
+            font-weight: 200;
+            border: 1px solid white;
+            background-color: black;
+            color: white;
+            outline: none;
+            &:hover {
+                background-color: white;
+                border: 1px solid black;
+                color: red;
+            }
+        }
+    .list {
+        li {
+            list-style: none;
+            p {
+                float: left;
+                margin-right: 25px;
+            }
             .iconic {
-                width: 50px;
-                height: 50px;
-            }
-        }
-        .list {
-            li {
-                list-style: none;
-                p {
-                    float: left;
-                    margin-right: 25px;
-                }
-                .iconic {
-                    background-color: green;
-                    border-radius: 5px;
-                    width: 25px;
-                    margin-top: -3px;
-                    height: 25px;
-                    padding: 5px;
-                    float: left;
-                }
-            }
-        }
-        table {
-            width: 80%;
-            margin: 45px 10%;
-            border-top: 1px solid #333;
-        }
-        td, th {
-            padding: 5px;
-        }
-        tr.file {
-            button {
-                height: 30px;
-                border: none;
+                background-color: green;
                 border-radius: 5px;
-                position: relative;
-                p {
-                    padding: 5px 15px 0 33px;
-                }
-                .iconic {
-                    height: 20px;
-                    width: 20px;
-                    position: absolute;
-                    left: 10px;
-                    top: 5px;
-                    fill: white;
-                }
+                width: 25px;
+                margin-top: -3px;
+                height: 25px;
+                padding: 5px;
+                float: left;
             }
         }
+    }
+    table {
+        width: 80%;
+        margin: 45px 10%;
+        border-top: 1px solid #333;
+    }
+    td, th {
+        padding: 5px;
+    }
+    tr.file {
+        button {
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            position: relative;
+            p {
+                padding: 5px 15px 0 33px;
+            }
+            .iconic {
+                height: 20px;
+                width: 20px;
+                position: absolute;
+                left: 10px;
+                top: 5px;
+                fill: white;
+            }
+        }
+    }
 }
 
 .addProject.ng-hide-add {
@@ -1823,6 +1886,7 @@ $flat-colours: #1abc9c, #2ecc71, #3498db, #9b59b6, #34495e, #16a085, #27ae60, #2
 
 /* flip speed goes here */
 .flipper {
+    cursor:pointer;
     transition: 0.6s;
     transform-style: preserve-3d;
     position: relative;

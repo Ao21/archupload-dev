@@ -16,6 +16,9 @@ angular.module('archuploadApp')
             get: function(id){
                 return baseApi.one('projects', id).get();
             },
+            deleteProject: function(id){
+                return baseApi.one('projects', id).remove();
+            },
             update: function(id, update){
                 return baseApi.one('projects', id).customPUT(update);  
             },
@@ -28,6 +31,9 @@ angular.module('archuploadApp')
             createStudio: function(project) {
                 return baseApi.all('studios').post(project);
             },
+            getNames: function(){
+                 return baseApi.all('unikeys/names').getList();
+            }
             
         }
     })

@@ -26,10 +26,10 @@
 	 <span>Add a project</span>
 	</div>
 
-	<div class="button" random-class  ng-class="{'pop-open':!hideMain}">
+	<!-- <div class="button" random-class  ng-class="{'pop-open':!hideMain}">
 		<img iconic data-src="assets/icons/settings.svg" class="iconic " alt="settings">
 		<span>Edit your profile</span>
-	</div>
+	</div> -->
 
 	<div class="button" ng-click="getProject(project)" random-class ng-class="{'pop-open':!hideMain}" ng-repeat="project in projects"><div style="background-image:url({{project.files[0].location}})" class="bkImg"></div><span>{{project.name}}</span></div>
 </section>
@@ -121,15 +121,67 @@
 			<p>Go Back</p>
 		</div>
  	</div>
- 	<div class="question" ng-show="currentQuestion===5">
+ 	<div class="question" ng-show="currentQuestion===5" backSpaceNotBackButton>
+		<label for="">Other group members?</label>
+
+ 		 
+		<select chosen multiple id="otherAuthors" ng-model="project.author" 
+		ng-options="obj._id as obj.unikey for obj in uniKeyList">
+		  
+		</select>
+
+		
+ 		<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+ 			<p>Next</p>
+ 		</div>
+ 		<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+ 	</div>
+ 	<div class="question" ng-show="currentQuestion===6">
+		<label for="">Upload Panels</label>
+
+ 		 <div class="button upld" ng-file-select="onFileSelectPanel($files)" data-multiple="true">
+ 			<img iconic data-src="assets/icons/plus.svg" class="iconic ">
+ 		</div> 
+ 		<table class="list" ng-show="panelFiles.length">
+ 		<thead>
+ 		<tr>
+ 			<th>Name</th>
+ 			<th>Size</th>
+ 			<th>Progress</th>
+ 			<th>Actions</th>
+ 			</tr>
+ 		</thead>
+ 		<tbody>
+ 			<tr class="file" ng-repeat="file in panelFiles">
+ 				<td>{{file.name}}</td>
+ 				<td>{{file.size}}</td>
+ 				<td>{{file.progress}}</td>
+ 				<td>
+ 					<button ng-click="uploadPanels(file)"><img iconic data-src="assets/icons/circle-check.svg" class="iconic "><p>Upload</p></button>
+ 					<button ><img iconic data-src="assets/icons/circle-x.svg" class="iconic "><p>Cancel</p></button>
+ 					<button ng-click="removeFile($index)"><img iconic data-src="assets/icons/trash.svg" class="iconic "><p>Remove</p></button>
+ 				</td>
+ 			</tr>
+ 		</tbody>
+ 		</table>
+ 		<div class="next" ng-click="nextQuestion()" ng-class="{valid:validate()}">
+ 			<p>Next</p>
+ 		</div>
+ 		<div class="last" ng-click="lastQuestion()" ng-class="{valid:validate()}">
+			<p>Go Back</p>
+		</div>
+ 	</div>
+ 	<div class="question" ng-show="currentQuestion===7">
  	 <p>Confirm your project's details.</p>
 
  	<table style="width:100%;margin:46px 0;">
  		<tbody>
  			<tr><td>Project Name:</td><td>{{project.name}}</td></tr>
  			<tr><td>Project Studio:</td><td>{{project.studio}}</td></tr>
- 			<tr><td>Project Summary:</td><td>{{project.summary}}</td></tr>
- 			<tr><td>Project Detail:</td><td>{{project.detail}}</td></tr>
+ 			<tr><td>Project Summary:</td><td><p ng-bind-html="project.summary"></p></td></tr>
+ 			<tr><td>Project Detail:</td><td><p ng-bind-html="project.detail"></p></td></tr>
  		</tbody>
  	</table>
  	<div>
@@ -206,6 +258,10 @@
  			</tr>
  		</tbody>
  		</table>
+ 		<label for="">Panels</label>
+ 		<a ng-repeat="file in selectedProject.panels" href="{{file.location}}">{{file.key}}</a>
+ 		<br>
+ 		<button ng-click="deleteProject(selectedProject._id)">Delete this Project</button>
 
 </section>
 

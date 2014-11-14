@@ -13,7 +13,8 @@ angular.module('archuploadApp', [
   'ui.bootstrap',
   'ngSVGAttributes',
   'restangular',
-  'xeditable'
+  'xeditable',
+  'localytics.directives'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

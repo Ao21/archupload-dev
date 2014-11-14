@@ -13,7 +13,7 @@ angular.module('archuploadApp')
       $scope.allStudios = data.plain();
     });
 
-    $scope.uploadFile = function(files){
+    $scope.uploadFile2 = function(files){
        var fd = new FormData();
       fd.append("file", files[0]);
       console.log(files[0]);
